@@ -123,7 +123,7 @@ jobs:
         run: ls -R
 
       - name: Upload images artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: boot-images-android14
           path: Image-android14*/*.img.gz
