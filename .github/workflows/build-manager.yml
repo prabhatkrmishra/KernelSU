@@ -90,13 +90,13 @@ jobs:
           gradle-home-cache-cleanup: true
 
       - name: Download arm64 ksud
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: ksud-aarch64-linux-android
           path: .
 
       - name: Download x86_64 ksud
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: ksud-x86_64-linux-android
           path: .
