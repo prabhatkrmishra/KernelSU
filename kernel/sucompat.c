@@ -333,11 +333,10 @@ static int pts_unix98_lookup_pre(struct kprobe *p, struct pt_regs *regs)
 	return ksu_handle_devpts(inode);
 }
 
-static struct kprobe pts_unix98_lookup_kp = { .symbol_name =
-						      "pts_unix98_lookup",
-					      .pre_handler =
-						      pts_unix98_lookup_pre };
-
+static struct kprobe pts_unix98_lookup_kp = {
+	.symbol_name = "pts_unix98_lookup",
+	.pre_handler = pts_unix98_lookup_pre,
+};
 #endif
 
 // sucompat: permited process can execute 'su' to gain root access.
@@ -347,22 +346,22 @@ void ksu_sucompat_init()
 	int ret;
 	ret = register_kprobe(&execve_kp);
 	pr_info("sucompat: execve_kp: %d\n", ret);
-	ret = register_kprobe(&newfstatat_kp);
-	pr_info("sucompat: newfstatat_kp: %d\n", ret);
 	ret = register_kprobe(&faccessat_kp);
 	pr_info("sucompat: faccessat_kp: %d\n", ret);
+	ret = register_kprobe(&newfstatat_kp);
+	pr_info("sucompat: newfstatat_kp: %d\n", ret);
 	ret = register_kprobe(&pts_unix98_lookup_kp);
-	pr_info("sucompat: devpts_kp: %d\n", ret);
+	pr_info("sucompat: pts_unix98_lookup_kp: %d\n", ret);
 #endif
 }
 
 void ksu_sucompat_exit()
 {
 #ifdef CONFIG_KPROBES
-	unregister_kprobe(&execve_kp);
+	unregister_kprobe(&pts_unix98_lookup_kp);
 	unregister_kprobe(&newfstatat_kp);
 	unregister_kprobe(&faccessat_kp);
-	unregister_kprobe(&pts_unix98_lookup_kp);
+	unregister_kprobe(&execve_kp);
 #endif
 }
 

@@ -17,20 +17,12 @@ KernelSU 使用 kprobe 机制来做内核的相关 hook，如果 *kprobe* 可以
 
 首先，把 KernelSU 添加到你的内核源码树，在内核的根目录执行以下命令：
 
-::: code-group
-
-```sh[最新tag(稳定版本)]
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+```sh
+curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
 ```
 
-```sh[main分支(开发版本)]
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
-```
-
-```sh[指定tag(比如v0.5.2)]
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.5.2
-```
-
+:::info
+[KernelSU 1.0 及更高版本已经不再支持非 GKI 内核](https://github.com/tiann/KernelSU/issues/1705)，最后的支持版本为 `v0.9.5`，请注意使用正确的版本。
 :::
 
 然后，你需要检查你的内核是否开启了 *kprobe* 相关的配置，如果没有开启，需要添加以下配置：
@@ -43,7 +35,7 @@ CONFIG_KPROBE_EVENTS=y
 
 最后，重新编译你的内核即可。
 
-如果你发现KPROBES仍未生效，很有可能是因为它的依赖项`CONFIG_MODULES`没有被启用（如果还是未生效请键入`make menuconfig`搜索KPROBES 的其它依赖并启用 ）
+如果你发现 KPROBES 仍未生效，很有可能是因为它的依赖项`CONFIG_MODULES`没有被启用（如果还是未生效请键入`make menuconfig`搜索 KPROBES 的其它依赖并启用）
 
 如果你在集成 KernelSU 之后手机无法启动，那么很可能你的内核中 **kprobe 工作不正常**，你需要修复这个 bug 或者用第二种方法。
 
@@ -59,10 +51,10 @@ CONFIG_KPROBE_EVENTS=y
 首先，把 KernelSU 添加到你的内核源码树，在内核的根目录执行以下命令：
 
 ```sh
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
 ```
 
-请注意，某些设备的defconfig文件可能在`arch/arm64/configs/设备代号_defconfig`或位于`arch/arm64/configs/vendor/设备代号_defconfig`。在您的defconfig文件中,将 `CONFIG_KSU`设置为`y`以启用KernelSU,或设置为`n`以禁用。比如在某个defconfig中:
+请注意，某些设备的 defconfig 文件可能在`arch/arm64/configs/设备代号_defconfig`或位于`arch/arm64/configs/vendor/设备代号_defconfig`。在您的 defconfig 文件中，将`CONFIG_KSU`设置为`y`以启用 KernelSU，或设置为`n`以禁用。比如在某个 defconfig 中：
 `arch/arm64/configs/...` 
 ```sh
 +# KernelSU
@@ -327,7 +319,7 @@ index 32f6f1c68..d69d8eca2 100644
 
 ### path_umount {#how-to-backport-path-umount}
 
-你可以通过从K5.9向旧版本移植`path_umount`，在GKI之前的内核上获得卸载模块的功能。你可以通过以下补丁作为参考:
+你可以通过从 K5.9 向旧版本移植 `path_umount`，在 GKI 之前的内核上获得卸载模块的功能。你可以通过以下补丁作为参考:
 
 ```diff
 --- a/fs/namespace.c
