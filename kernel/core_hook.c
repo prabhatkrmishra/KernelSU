@@ -974,11 +974,11 @@ static void ksu_try_umount(const char *mnt, bool check_mnt, int flags)
 #ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
 void susfs_try_umount_all(uid_t uid) {
 	susfs_try_umount(uid);
-	ksu_try_umount("/system", true, 0, uid);
-	ksu_try_umount("/system_ext", true, 0, uid);
-	ksu_try_umount("/vendor", true, 0, uid);
-	ksu_try_umount("/product", true, 0, uid);
-	ksu_try_umount("/odm", true, 0, uid);
+	ksu_try_umount("/system", true, MNT_DETACH, uid);
+	ksu_try_umount("/system_ext", true, MNT_DETACH, uid);
+	ksu_try_umount("/vendor", true, MNT_DETACH, uid);
+	ksu_try_umount("/product", true, MNT_DETACH, uid);
+	ksu_try_umount("/odm", true, MNT_DETACH, uid);
 	// - For '/data/adb/modules' we pass 'false' here because it is a loop device that we can't determine whether 
 	//   its dev_name is KSU or not, and it is safe to just umount it if it is really a mountpoint
 	ksu_try_umount("/data/adb/modules", false, MNT_DETACH, uid);
@@ -1072,10 +1072,11 @@ out_ksu_try_umount:
 #else
 	// fixme: use `collect_mounts` and `iterate_mount` to iterate all mountpoint and
 	// filter the mountpoint whose target is `/data/adb`
-	ksu_try_umount("/system", true, 0);
-	ksu_try_umount("/vendor", true, 0);
-	ksu_try_umount("/product", true, 0);
-	ksu_try_umount("/system_ext", true, 0);
+	ksu_try_umount("/system", true, MNT_DETACH);
+	ksu_try_umount("/system_ext", true, MNT_DETACH);
+	ksu_try_umount("/vendor", true, MNT_DETACH);
+	ksu_try_umount("/product", true, MNT_DETACH);
+	ksu_try_umount("/odm", true, MNT_DETACH);
 	ksu_try_umount("/data/adb/modules", false, MNT_DETACH);
 
 	// try umount ksu temp path
