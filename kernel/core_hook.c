@@ -933,11 +933,11 @@ static bool should_umount(struct path *path)
 #endif
 }
 
-static void ksu_umount_mnt(struct path *path, int flags)
+static void ksu_umount_mnt(const char *mnt, struct path *path, int flags)
 {
 	int err = path_umount(path, flags);
 	if (err) {
-		pr_info("umount %s failed: %d\n", path->dentry->d_iname, err);
+		pr_info("umount %s failed: %d\n", mnt, err);
 	}
 }
 
@@ -968,7 +968,7 @@ static void ksu_try_umount(const char *mnt, bool check_mnt, int flags)
 		pr_info("susfs: umounting '%s' for uid: %d\n", mnt, uid);
 	}
 #endif
-	ksu_umount_mnt(&path, flags);
+	ksu_umount_mnt(mnt, &path, flags);
 }
 
 #ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
