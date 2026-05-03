@@ -711,7 +711,7 @@ static void free_security_hook_list(struct hlist_head *head)
 
 struct hlist_head *copy_security_hlist(struct hlist_head *orig)
 {
-	struct hlist_head *new_head = kmalloc(sizeof(*new_head), GFP_KERNEL);
+	struct hlist_head *new_head = kzalloc(sizeof(*new_head), GFP_KERNEL);
 	if (!new_head)
 		return NULL;
 
@@ -721,7 +721,7 @@ struct hlist_head *copy_security_hlist(struct hlist_head *orig)
 	struct security_hook_list *new_entry;
 
 	hlist_for_each_entry (entry, orig, list) {
-		new_entry = kmalloc(sizeof(*new_entry), GFP_KERNEL);
+		new_entry = kzalloc(sizeof(*new_entry), GFP_KERNEL);
 		if (!new_entry) {
 			free_security_hook_list(new_head);
 			return NULL;
