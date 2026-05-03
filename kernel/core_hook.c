@@ -449,11 +449,11 @@ static bool should_umount(struct path *path)
 	return false;
 }
 
-static void ksu_umount_mnt(struct path *path, int flags)
+static void ksu_umount_mnt(const char *mnt, struct path *path, int flags)
 {
 	int err = path_umount(path, flags);
 	if (err) {
-		pr_info("umount %s failed: %d\n", path->dentry->d_iname, err);
+		pr_info("umount %s failed: %d\n", mnt, err);
 	}
 }
 
@@ -475,7 +475,7 @@ static void try_umount(const char *mnt, bool check_mnt, int flags)
 		return;
 	}
 
-	ksu_umount_mnt(&path, flags);
+	ksu_umount_mnt(mnt, &path, flags);
 }
 
 int ksu_handle_setuid(struct cred *new, const struct cred *old)
